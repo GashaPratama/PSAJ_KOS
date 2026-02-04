@@ -2,6 +2,14 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 <head>
     @include('partials.head')
+    <script>
+        (function() {
+            const stored = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const dark = stored === 'dark' || (!stored && prefersDark);
+            document.documentElement.classList.toggle('dark', dark);
+        })();
+    </script>
 </head>
 <body class="min-h-screen bg-white font-sans text-zinc-900 antialiased dark:bg-zinc-950 dark:text-white">
     <!-- Navbar Wrapper for Hide/Show Logic -->
@@ -68,6 +76,19 @@
                         <flux:button href="https://wa.me/6282136677730" variant="primary" class="hidden md:flex">
                             {{ __('Booking Sekarang') }}
                         </flux:button>
+
+                        {{-- Theme toggle: dark/light --}}
+                        <button
+                            type="button"
+                            x-data="{ dark: false }"
+                            x-init="dark = document.documentElement.classList.contains('dark'); $watch('dark', val => { document.documentElement.classList.toggle('dark', val); localStorage.setItem('theme', val ? 'dark' : 'light'); })"
+                            @click="dark = !dark"
+                            aria-label="Toggle dark mode"
+                            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+                        >
+                            <flux:icon x-show="!dark" icon="moon" class="size-5" />
+                            <flux:icon x-show="dark" icon="sun" class="size-5" x-cloak />
+                        </button>
                         
                         <flux:sidebar.toggle class="md:hidden" icon="bars-3" />
                     </div>
