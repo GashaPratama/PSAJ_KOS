@@ -73,9 +73,6 @@
                             </flux:button>
                         @endauth
                         
-                        <flux:button href="https://wa.me/6282136677730" variant="primary" class="hidden md:flex">
-                            {{ __('Booking Sekarang') }}
-                        </flux:button>
 
                         {{-- Theme toggle: dark/light --}}
                         <button
