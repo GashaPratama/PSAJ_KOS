@@ -12,7 +12,7 @@ use Livewire\Component;
 new class extends Component {
     use ProfileValidationRules;
 
-    public string $name = '';
+    public string $nama_lengkap = '';
     public string $email = '';
 
     /**
@@ -20,8 +20,8 @@ new class extends Component {
      */
     public function mount(): void
     {
-        $this->name = Auth::user()->name;
-        $this->email = Auth::user()->email;
+        $this->nama_lengkap = Auth::user()->nama_lengkap ?? '';
+        $this->email = Auth::user()->email ?? '';
     }
 
     /**
@@ -35,13 +35,9 @@ new class extends Component {
 
         $user->fill($validated);
 
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
         $user->save();
 
-        $this->dispatch('profile-updated', name: $user->name);
+        $this->dispatch('profile-updated', name: $user->nama_lengkap);
     }
 
     /**
@@ -51,8 +47,8 @@ new class extends Component {
     {
         $user = Auth::user();
 
-        if ($user->hasVerifiedEmail()) {
-            $this->redirectIntended(default: route('dashboard', absolute: false));
+        if (! $user instanceof MustVerifyEmail || $user->hasVerifiedEmail()) {
+            $this->redirectIntended(default: route('home', absolute: false));
 
             return;
         }
@@ -65,14 +61,18 @@ new class extends Component {
     #[Computed]
     public function hasUnverifiedEmail(): bool
     {
-        return Auth::user() instanceof MustVerifyEmail && ! Auth::user()->hasVerifiedEmail();
+        $user = Auth::user();
+
+        return $user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail();
     }
 
     #[Computed]
     public function showDeleteUser(): bool
     {
-        return ! Auth::user() instanceof MustVerifyEmail
-            || (Auth::user() instanceof MustVerifyEmail && Auth::user()->hasVerifiedEmail());
+        $user = Auth::user();
+
+        return ! $user instanceof MustVerifyEmail
+            || ($user instanceof MustVerifyEmail && $user->hasVerifiedEmail());
     }
 }; ?>
 
@@ -83,7 +83,7 @@ new class extends Component {
 
     <x-pages::settings.layout :heading="__('Profile')" :subheading="__('Update your name and email address')">
         <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
-            <flux:input wire:model="name" :label="__('Name')" type="text" required autofocus autocomplete="name" />
+            <flux:input wire:model="nama_lengkap" :label="__('Nama lengkap')" type="text" required autofocus autocomplete="name" />
 
             <div>
                 <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" />

@@ -64,8 +64,8 @@
 
                     <div class="flex items-center gap-4">
                         @auth
-                            <flux:button href="{{ route('dashboard') }}" variant="ghost" class="hidden md:flex">
-                                {{ __('Dashboard') }}
+                            <flux:button href="{{ route('profile.edit') }}" variant="ghost" class="hidden md:flex">
+                                {{ __('Profil') }}
                             </flux:button>
                         @else
                             <flux:button href="{{ route('login') }}" variant="ghost" class="hidden md:flex">
@@ -103,6 +103,19 @@
             <flux:sidebar.item href="#poi">{{ __('Lokasi') }}</flux:sidebar.item>
             <flux:sidebar.item href="#kontak">{{ __('Kontak') }}</flux:sidebar.item>
             <flux:sidebar.item href="https://wa.me/6282136677730">{{ __('Booking Sekarang') }}</flux:sidebar.item>
+            @auth
+                <flux:sidebar.item href="{{ route('profile.edit') }}">{{ __('Profil') }}</flux:sidebar.item>
+                <li>
+                    <form method="POST" action="{{ route('logout') }}" class="w-full">
+                        @csrf
+                        <button type="submit" class="w-full px-3 py-2 text-start text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800" data-test="logout-button">
+                            {{ __('Logout') }}
+                        </button>
+                    </form>
+                </li>
+            @else
+                <flux:sidebar.item href="{{ route('login') }}">{{ __('Login') }}</flux:sidebar.item>
+            @endauth
         </flux:sidebar.nav>
     </flux:sidebar>
 

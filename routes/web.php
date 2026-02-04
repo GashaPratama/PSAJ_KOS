@@ -6,8 +6,8 @@ Route::get('/', function () {
     return view('landingpage');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::get('dashboard', function () {
+    return redirect()->route('home');
+})->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/settings.php';

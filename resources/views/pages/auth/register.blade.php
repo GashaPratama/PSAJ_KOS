@@ -5,18 +5,24 @@
         <!-- Session Status -->
         <x-auth-session-status class="text-center" :status="session('status')" />
 
+        @error('session')
+            <div class="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:bg-amber-900/30 dark:text-amber-200" role="alert">
+                {{ $message }}
+            </div>
+        @enderror
+
         <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6">
             @csrf
-            <!-- Name -->
+            <!-- Nama Lengkap -->
             <flux:input
-                name="name"
-                :label="__('Name')"
-                :value="old('name')"
+                name="nama_lengkap"
+                :label="__('Nama lengkap')"
+                :value="old('nama_lengkap')"
                 type="text"
                 required
                 autofocus
                 autocomplete="name"
-                :placeholder="__('Full name')"
+                :placeholder="__('Nama lengkap')"
             />
 
             <!-- Email Address -->
