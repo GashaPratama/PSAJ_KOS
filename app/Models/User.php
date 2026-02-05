@@ -55,6 +55,18 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the URL for the user's profile photo or default avatar.
+     */
+    public function avatarUrl(): string
+    {
+        if ($this->foto_profil) {
+            return \Illuminate\Support\Facades\Storage::url($this->foto_profil);
+        }
+
+        return asset('img/default-avatar.svg');
+    }
+
+    /**
      * Get the user's initials
      */
     public function initials(): string

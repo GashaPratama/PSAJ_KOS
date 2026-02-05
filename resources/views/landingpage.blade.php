@@ -64,9 +64,9 @@
 
                     <div class="flex items-center gap-4">
                         @auth
-                            <flux:button href="{{ route('profile.edit') }}" variant="ghost" class="hidden md:flex">
-                                {{ __('Profil') }}
-                            </flux:button>
+                            <a href="{{ route('profile.edit') }}" class="hidden md:flex shrink-0 rounded-full ring-2 ring-transparent transition-shadow hover:ring-zinc-300 dark:hover:ring-zinc-600" aria-label="{{ __('Profil') }}">
+                                <img src="{{ auth()->user()->avatarUrl() }}" alt="" class="h-9 w-9 rounded-full object-cover" />
+                            </a>
                         @else
                             <flux:button href="{{ route('login') }}" variant="ghost" class="hidden md:flex">
                                 {{ __('Login') }}
